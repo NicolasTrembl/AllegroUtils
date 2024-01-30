@@ -3,10 +3,10 @@ from tkinter.filedialog import askopenfilename
 import pyperclip
 
 
-"""
-    Ce code permet de générer plus simplement les triangles utilisé pour les test de collision
-    C'est pas beau mais ça marche plus ou moins
-"""
+""" ==========================================================================================#
+|   Ce code permet de générer plus simplement les triangles utilisé pour les test de collision|
+|   C'est pas beau mais ça marche plus ou moins                                               |
+""""=========================================================================================="
 
 
 center_x = 400
