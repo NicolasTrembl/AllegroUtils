@@ -19,7 +19,7 @@ gameObject* newImage(int* id, char* path) {
     gameObject* gObject = createEmptyGameObject(id, Image);
     imageParams* params = malloc(sizeof(imageParams));
 
-    ALLEGRO_BITMAP* img = al_load_bitmap("C:\\Users\\ntrem\\code\\FFuture\\assets\\images\\point.png");
+    ALLEGRO_BITMAP* img = al_load_bitmap(path);
 
     *params = (imageParams) {
         img,

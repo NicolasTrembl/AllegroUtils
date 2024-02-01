@@ -98,9 +98,9 @@ int main(){
     /* Init id to zero */
     int id = 0;
 
-    gameObject* text1 = newTextArea(&id, "DVD", font, al_map_rgb(225, 225, 225));
+    gameObject* text1 = newTextArea(&id, "Test", font, al_map_rgb(225, 225, 225));
     gameObject* col1  = newCollider(&id, triPoints, 4);
-    gameObject* img1  = newImage(&id, "");
+    gameObject* img1  = newImage(&id, "..\\Assets\\images\\point.png");
 
     printf("gameObject ok\n");
 
