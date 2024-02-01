@@ -7,7 +7,6 @@
 #include "Classes/gameObjects/text_area_gameobject.h"
 #include "Classes/gameObjects/collider_gameobject.h"
 #include "Classes/gameObjects/image_gameobject.h"
-#include <windows.h>
 
 const float FPS = 60;
 
@@ -148,7 +147,6 @@ int main(){
     while (isLooping) {
         al_wait_for_event(queue, &event);
 
-        /* HERE GOES THE EVERY NOT TIMED LOGIC*/
         if (event.type == ALLEGRO_EVENT_KEY_DOWN){
             printf("key down\n");
 
@@ -160,8 +158,6 @@ int main(){
                 break;
             }
         } else if (event.type == ALLEGRO_EVENT_TIMER) {
-
-            /* HERE GOES ALL LOGIC BASED ON TICK */
 
             position newPos = moveGameObject(img1, txtOffset);
             printf("moved img\n");
