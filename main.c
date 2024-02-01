@@ -53,7 +53,7 @@ int main(){
     disp = al_create_display(640, 480);
 
     if(!disp) {
-        fprintf(stderr, "L'écran ne marche pas!\n");
+        fprintf(stderr, "failed to create display!\n");
         return -1;
     }
 
@@ -141,29 +141,6 @@ int main(){
     printf("setup ok\n");
     
     bool redraw = true;
-
-    al_clear_to_color(al_map_rgb(0, 255, 0));
-
-    al_update_display_region(0, 0, width, height);
-    
-    Sleep(100);
-
-    al_clear_to_color(al_map_rgb(0, 0, 255));
-
-    al_update_display_region(0, 0, width, height);
-
-    Sleep(100);
-
-
-    al_clear_to_color(al_map_rgb(255, 0, 0));
-
-    al_update_display_region(0, 0, width, height);
-    Sleep(100);
-
-    al_clear_to_color(al_map_rgb(255, 255, 0));
-
-    al_update_display_region(0, 0, width, height);
-
 
 
     al_start_timer(timer);
