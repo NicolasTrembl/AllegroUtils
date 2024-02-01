@@ -1,10 +1,9 @@
 #include "gameObject.h"
-#include "gameObjects/text_area_gameobject.h"
-#include "gameObjects/collider_gameobject.h"
-#include "gameObjects/image_gameobject.h"
+#include "TypeOfObjects/text_area_gameobject.h"
+#include "TypeOfObjects/collider_gameobject.h"
+#include "TypeOfObjects/image_gameobject.h"
 #include <stdlib.h>
 #include <stdio.h>
-
 
 
 int addGameObjectToGameObjectChildren(gameObject* gObject, gameObject* child) {
@@ -16,6 +15,9 @@ int addGameObjectToGameObjectChildren(gameObject* gObject, gameObject* child) {
     }
     gObject->children[currentLength] = child;
     gObject->childrenCount++;
+
+    if (gObject->type == Image) moveChildToCenter(*gObject, child->id);
+
     return gObject->childrenCount;
 }
 
@@ -93,64 +95,48 @@ position moveGameObject(gameObject* gObject, position offset) {
     gObject->pos.point.x += offset.point.x;
     gObject->pos.point.y += offset.point.y;
 
-    
-        
-    if (gObject->children != NULL) {
-        for (int i = 0; i < gObject->childrenCount; i++) {
-            moveGameObject(gObject->children[i], offset);
-        }
-    }
-
-
     return gObject->pos;
 }
 void putGameObjectAt(gameObject* gObject, position position) {
     gObject->pos.point.x = position.point.x;
     gObject->pos.point.y = position.point.y;
     
-        
-    if (gObject->children != NULL) {
-        for (int i = 0; i < gObject->childrenCount; i++) {
-            moveGameObject(gObject->children[i], position);
-        }
-    }
-
-
 }
 
 
 // ================ Type related methods ================ //
 
 
-void drawGameObject(gameObject gObject) {
+position drawGameObject(gameObject gObject, position offset) {
     switch (gObject.type) {
         case Node:
             // can't draw a node    
         break;
         
         case Collider:
-            drawCollider(gObject.pos, (colliderParams *) gObject.params);  
+            drawCollider(addPos(gObject.pos, offset), (colliderParams *) gObject.params);  
         break;
         
         case TextArea:
             drawTextArea(
-                gObject.pos,
+                addPos(gObject.pos, offset),
                 (textAreaParams *) gObject.params
             );
         break;
         
         case Image:
-            drawImage(gObject.pos, (imageParams *) gObject.params);   
+            drawImage(addPos(gObject.pos, offset), (imageParams *) gObject.params);   
         break;
         
         default:
             break;
     }
     
+    return addPos(gObject.pos, offset);
 
-    if (gObject.children == NULL) return;
+    // if (gObject.children == NULL) return;
 
-    for (int i = 0; i < gObject.childrenCount; i++) {
-        drawGameObject(*((gameObject *)gObject.children[i]));
-    }
+    // for (int i = 0; i < gObject.childrenCount; i++) {
+    //     drawGameObject(*((gameObject *)gObject.children[i]), addPos(gObject.pos, offset));
+    // }
 }

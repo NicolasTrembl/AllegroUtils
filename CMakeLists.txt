@@ -6,10 +6,12 @@ link_directories(${CMAKE_SOURCE_DIR}/lib)
 
 add_executable(
     AllegroTest main.c 
-    Classes/gameObject.h Classes/gameObject.c
-    Classes/gameObjects/text_area_gameobject.h Classes/gameObjects/text_area_gameobject.c
-    Classes/gameObjects/collider_gameobject.h Classes/gameObjects/collider_gameobject.c
-    Classes/gameObjects/image_gameobject.h Classes/gameObjects/image_gameobject.c
+    Utils/2dlogics.h Utils/2dlogics.c
+    Painter/painter.h Painter/painter.c
+    GameObjects/gameObject.h GameObjects/gameObject.c
+    GameObjects/TypeOfObjects/text_area_gameobject.h GameObjects/TypeOfObjects/text_area_gameobject.c
+    GameObjects/TypeOfObjects/collider_gameobject.h GameObjects/TypeOfObjects/collider_gameobject.c
+    GameObjects/TypeOfObjects/image_gameobject.h GameObjects/TypeOfObjects/image_gameobject.c
 )
 target_link_libraries(AllegroTest allegro.dll)
 target_link_libraries(AllegroTest allegro_font.dll)

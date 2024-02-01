@@ -66,7 +66,7 @@ void    putGameObjectAt(gameObject* gObject, position position);
 /*  Affiche l'objet
     @note Si ses enfant peuvent être affiché, ils le sont 
 */
-void     drawGameObject(gameObject gObject);
+position    drawGameObject(gameObject gObject, position offset);
 
 
 #endif

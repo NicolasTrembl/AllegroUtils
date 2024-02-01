@@ -3,10 +3,12 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
-#include "Classes/gameObject.h"
-#include "Classes/gameObjects/text_area_gameobject.h"
-#include "Classes/gameObjects/collider_gameobject.h"
-#include "Classes/gameObjects/image_gameobject.h"
+#include "Utils/2dlogics.h"
+#include "Painter/painter.h"
+#include "GameObjects/gameObject.h"
+#include "GameObjects/TypeOfObjects/text_area_gameobject.h"
+#include "GameObjects/TypeOfObjects/collider_gameobject.h"
+#include "GameObjects/TypeOfObjects/image_gameobject.h"
 
 const float FPS = 60;
 
@@ -56,7 +58,7 @@ int main(){
         return -1;
     }
 
-    al_set_window_title(disp, "TEST - DEBUG SESSION");
+    al_set_window_title(disp, "TEST");
 
     printf("Display ok");
 
@@ -92,28 +94,21 @@ int main(){
 
     ALLEGRO_EVENT event;
 
-    printf("\nallegro ok\n");
+    printf("\nAllegro is ok\n");
     
     /* Init id to zero */
     int id = 0;
+
+    gameObject* root = createEmptyGameObject(&id, Node);
 
     gameObject* text1 = newTextArea(&id, "Test", font, al_map_rgb(225, 225, 225));
     gameObject* col1  = newCollider(&id, triPoints, 4);
     gameObject* img1  = newImage(&id, "..\\Assets\\images\\point.png");
 
-    printf("gameObject ok\n");
-
+    addChildtoGameObject(root, img1);
 
     addChildtoGameObject(img1, text1);
     addChildtoGameObject(img1, col1);
-
-    printf("child ok\n");
-
-    moveChildToCenter(*img1, col1->id);
-    moveChildToCenter(*img1, text1->id);
-
-    printf("child moved\n");
-
 
     // int width = info.x2 - info.x1;
     // int height = info.y2 - info.y1;
@@ -127,20 +122,17 @@ int main(){
         DEFAULT_LAYER
     };
 
-
     putGameObjectAt(img1, center);
 
     position txtOffset = {
         15, 15, DEFAULT_LAYER
     };
 
-
     bool isLooping = true;
 
-    printf("setup ok\n");
-    
     bool redraw = true;
 
+    printf("Setup ok\n");
 
     al_start_timer(timer);
 
@@ -148,7 +140,7 @@ int main(){
         al_wait_for_event(queue, &event);
 
         if (event.type == ALLEGRO_EVENT_KEY_DOWN){
-            printf("key down\n");
+            printf("Key down\n");
 
             switch (event.keyboard.keycode){
                 case ALLEGRO_KEY_ESCAPE:
@@ -160,7 +152,6 @@ int main(){
         } else if (event.type == ALLEGRO_EVENT_TIMER) {
 
             position newPos = moveGameObject(img1, txtOffset);
-            printf("moved img\n");
 
 
             if (newPos.point.x >= width || newPos.point.x <= 0) txtOffset.point.x *= -1;
@@ -175,19 +166,9 @@ int main(){
             
             // draw part
 
-            printf("new frame\n");
+            al_clear_to_color(al_map_rgb(0, 0, 0));            
 
-            al_clear_to_color(al_map_rgb(0, 0, 0));
-
-            printf("color ok\n");
-            
-            drawGameObject(*img1);
-            
-            printf("obj ok\n");
-            
-            al_flip_display();
-
-            printf("draw ok\n");
+            drawAll(root);
 
             redraw = false;
         }
@@ -195,25 +176,17 @@ int main(){
 
     }
 
-    printf("quit loop\n");
-
     al_destroy_timer(timer);
     timer = NULL;
-    printf("t - ");
     al_destroy_font(font);
     font = NULL;
-    printf("f - ");
     al_destroy_display(disp);
     disp = NULL;
-    printf("d - ");
     al_destroy_event_queue(queue);
     queue = NULL;
-    printf("q - ");
     al_shutdown_image_addon();
-    printf("i - ");
-    deleteGameObject(img1);
-    printf("img - ");
-    printf("clean ok\n");
+    deleteGameObject(root);
+    printf("Cleaned\n");
 
 
     return 0;

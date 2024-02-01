@@ -41,4 +41,8 @@ typedef struct Position2D {
     layer               layer;
 } position ;
 
+#define DEFAULTPOSITION (position) {(point){0, 0}, DEFAULT_LAYER}
+
+position addPos(position p1, position p2);
+
 #endif
