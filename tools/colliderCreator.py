@@ -9,14 +9,35 @@ import pyperclip
 """"=========================================================================================="
 
 
+
 center_x = 400
 center_y = 250
 
 def toCenter(pos) :
+    """
+    Translates the given position to the center of the canvas.
+    
+    Args:
+        pos (list): The position to be translated.
+        
+    Returns:
+        list: The translated position.
+    """
     out = [pos[0] + center_x, pos[1] + center_y]
     return out
 
 def drawRound(pos, cnv, size):
+    """
+    Draws a round shape on the canvas.
+    
+    Args:
+        pos (list): The position of the center of the round shape.
+        cnv (Canvas): The canvas on which to draw the round shape.
+        size (int): The size of the round shape.
+        
+    Returns:
+        int: The id of the drawn round shape on the canvas.
+    """
     topLeft = [pos[0] - size, pos[1] - size]
     bottomRight = [pos[0] + size, pos[1] + size]
     return cnv.create_oval(topLeft, bottomRight)
@@ -27,6 +48,12 @@ class image :
         self.addr = None
 
     def draw(self, cnv):
+        """
+        Draws the image on the canvas.
+        
+        Args:
+            cnv (Canvas): The canvas on which to draw the image.
+        """
         if (self.image != None):
             self.addr = cnv.create_image(center_x, center_y,image= self.image)
 
@@ -38,6 +65,17 @@ class triangle :
         self.size = 5
     
     def isOn(self, x, y, size = None):
+        """
+        Checks if the given point is inside the triangle.
+        
+        Args:
+            x (int): The x-coordinate of the point.
+            y (int): The y-coordinate of the point.
+            size (int, optional): The size of the triangle. Defaults to None.
+        
+        Returns:
+            int: The index of the point inside the triangle, or -1 if the point is not inside the triangle.
+        """
         if (size == None): size = self.size
         index = 0
         for pts in [self.a, self.b, self.c]:
@@ -47,10 +85,27 @@ class triangle :
     
     
     def setPos(self, index, x, y):
+        """
+        Sets the position of a point in the triangle.
+        
+        Args:
+            index (int): The index of the point to be set.
+            x (int): The new x-coordinate of the point.
+            y (int): The new y-coordinate of the point.
+        """
         [self.a, self.b, self.c][index][0] = x
         [self.a, self.b, self.c][index][1] = y
     
     def drawTri(self, cnv):
+        """
+        Draws the triangle on the canvas.
+        
+        Args:
+            cnv (Canvas): The canvas on which to draw the triangle.
+        
+        Returns:
+            list: The ids of the drawn lines and round shapes on the canvas.
+        """
         return [
             cnv.create_line(self.a, self.b, fill='green'),
             cnv.create_line(self.a, self.c, fill='green'),
@@ -70,10 +125,16 @@ img = image()
 
     
 def clearAll(cnv):
-        cnv.delete('all')
-        cnv.create_line((0, 250), (800, 250), fill='red')
-        cnv.create_line((400, 0), (400, 500), fill='blue')
-        trianglesDrawing.clear()
+    """
+    Clears the canvas and redraws the axes.
+    
+    Args:
+        cnv (Canvas): The canvas to be cleared.
+    """
+    cnv.delete('all')
+    cnv.create_line((0, 250), (800, 250), fill='red')
+    cnv.create_line((400, 0), (400, 500), fill='blue')
+    trianglesDrawing.clear()
 
 window = Tk()
 window.title("Collider creator")
@@ -82,6 +143,12 @@ window.geometry('800x600')
 
 
 def clicked(event):
+    """
+    Handles the click event on the canvas.
+    
+    Args:
+        event (Event): The click event.
+    """
     global selected
     index = 0
     for tri in triangles:
@@ -92,6 +159,12 @@ def clicked(event):
         index += 1
 
 def endClicked(event):
+    """
+    Handles the release of the mouse button on the canvas.
+    
+    Args:
+        event (Event): The release event.
+    """
     global selected
     if (join) :
         index = 0
@@ -113,11 +186,17 @@ def endClicked(event):
     selected = (-1, -1)
 
 def shiftPressed():
+    """
+    Toggles the join mode.
+    """
     global join
     join = not join
 
 def generateCode():
-    out = f"// All the triangles points \n point triPoints[{len(triangles)}][3] = " + "{\n"
+    """
+    Generates the code for the triangles and copies it to the clipboard.
+    """
+    out = f"// All the triangle's points \n point triPoints[{len(triangles)}][3] = " + "{\n"
     i = 0
     for tri in triangles:
         i += 1
@@ -144,18 +223,27 @@ canvas.create_line((400, 0), (400, 500), fill='blue')
 
 
 def setImage():
+    """
+    Sets the image to be displayed on the canvas.
+    """
     filename = askopenfilename() 
     img.image = PhotoImage(file=filename)
     if (img.addr != None) : canvas.delete(img.addr)
     img.draw(canvas)
 
 def addNewTri():
+    """
+    Adds a new triangle to the canvas.
+    """
     tri = triangle()
     triangles.append(tri)
     triDrawing = tri.drawTri(canvas)
     trianglesDrawing.append(triDrawing)
     
 def clearBtnFunc():
+    """
+    Clears all the triangles from the canvas.
+    """
     clearAll(canvas)
 
 btnClear = Button(window, text="Clear all", command=clearBtnFunc)
